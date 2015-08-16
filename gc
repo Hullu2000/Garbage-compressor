@@ -50,9 +50,9 @@ case "$1" in
 		esac
 		[ -f "$2" ] || usage "File not found"
 
-		mv "$2" "~/.gc/$UTIME"
-		xz "~/.gc/$UTIME"
-		echo "$PWD/$2" > "~/.gc/${UTIME}.log"
+		mv "$2" ~/.gc/"$UTIME"
+		xz ~/.gc/"$UTIME"
+		echo "$PWD/$2" > ~/.gc/"$UTIME".log
 		echo $PWD/$2 deleted at $UTIME >> ~/.gc/log
 		;;
 
@@ -62,11 +62,11 @@ case "$1" in
 			2) ;;
 			*) usage "Too many arguments"
 		esac
-		[ -f "~/.gc/${2}.xz" ] || usage "Timestamp not found"
+		[ -f ~/.gc/"$2".xz ] || usage "Timestamp not found"
 
-		xz -d "~/.gc/${2}.xz"
-		mv "~/.gc/$2" "$(cat ~/.gc/${2}.log)"
-		rm "~/.gc/${2}.log"
+		xz -d ~/.gc/"$2".xz
+		mv ~/.gc/"$2" "$(cat ~/.gc/${2}.log)"
+		rm ~/.gc/"$2".log
 		;;
 
 	l)
