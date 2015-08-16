@@ -53,7 +53,7 @@ case "$1" in
 		mv "$2" ~/.gc/"$UTIME"
 		xz ~/.gc/"$UTIME"
 		echo "$PWD/$2" > ~/.gc/"$UTIME".log
-		echo $PWD/$2 deleted at $UTIME >> ~/.gc/log
+		echo $PWD/$2 deleted at $UTIME | tee ~/.gc/log
 		;;
 
 	r)
