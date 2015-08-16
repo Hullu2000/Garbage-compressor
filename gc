@@ -41,6 +41,11 @@ fi
 if [ $1 = "l" ]; then
 	cat ~/.gc/log
 fi
+
+if [ $1 = "p" ]; then
+	xzcat ~/.gc/${2}.xz | less -S
+fi
+
 if [ $1 = "empty" ]; then
 	rm  ~/.gc/*
 fi
