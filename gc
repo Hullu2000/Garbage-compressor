@@ -45,4 +45,14 @@ case "$1" in
 	empty)
 		rm  ~/.gc/*
 		;;
+	*)
+		cat <<-EOF >&2
+		Command \`$1' unrecognised
+		Usage:
+		gc d FILENAME      Delete FILENAME
+		gc r TIMESTAMP     Recover file deleted at time TIMESTAMP
+		gc l               View deletion log and timestamps
+		gc empty           Empty the log and remove all deleted files
+		EOF
+		exit 1
 esac
