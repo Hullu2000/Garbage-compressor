@@ -27,22 +27,22 @@ UTIME=$(date +%s%3N)
 mkdir -p ~/.gc
 touch ~/.gc/log
 
-if [ "$1" = "d" ]; then
-	mv "$2" "~/.gc/$UTIME"
-	xz "~/.gc/$UTIME"
-	echo "$PWD/$2" > "~/.gc/${UTIME}.log"
-	echo $PWD/$2 deleted at $UTIME >> ~/.gc/log
-fi
-
-if [ "$1" = "r" ]; then
-	xz -d "~/.gc/${2}.xz"
-	mv "~/.gc/$2" "$(cat ~/.gc/${2}.log)"
-	rm "~/.gc/${2}.log"
-fi
-
-if [ "$1" = "l" ]; then
-	cat ~/.gc/log
-fi
-if [ "$1" = "empty" ]; then
-	rm  ~/.gc/*
-fi
+case "$1" in
+	d)
+		mv "$2" "~/.gc/$UTIME"
+		xz "~/.gc/$UTIME"
+		echo "$PWD/$2" > "~/.gc/${UTIME}.log"
+		echo $PWD/$2 deleted at $UTIME >> ~/.gc/log
+		;;
+	r)
+		xz -d "~/.gc/${2}.xz"
+		mv "~/.gc/$2" "$(cat ~/.gc/${2}.log)"
+		rm "~/.gc/${2}.log"
+		;;
+	l)
+		cat ~/.gc/log
+		;;
+	empty)
+		rm  ~/.gc/*
+		;;
+esac
