@@ -19,7 +19,7 @@ cp ./gc /usr/bin
 
 USAGE
 
-To delete a file type
+To delete a file
 
 gc d [file name]
 
