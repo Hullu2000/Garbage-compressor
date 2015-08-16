@@ -67,6 +67,10 @@ case "$1" in
 		xz -d ~/.gc/"$2".xz
 		mv ~/.gc/"$2" "$(cat ~/.gc/${2}.log)"
 		rm ~/.gc/"$2".log
+		# POSIX sed doesn't seem to have the -i option :(
+		cp ~/.gc/log ~/.gc/log.bak
+		sed "/$2/d" ~/.gc/log.bak > ~/.gc/log
+		rm ~/.gc/log.bak
 		;;
 
 	l)
