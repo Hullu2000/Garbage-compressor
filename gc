@@ -1,6 +1,6 @@
 #!/usr/bin/sh
 
-#Copyright (c) 2015 Hullu2000, Andy Morris
+#Copyright (c) 2015 Hullu2000, Andy Morris, Tosmarcel
 
 #Permission is hereby granted, free of charge, to any person obtaining
 #a copy of this software and associated documentation files (the
@@ -54,6 +54,16 @@ case "$1" in
 		xz ~/.gc/"$UTIME"
 		echo "$PWD/$2" > ~/.gc/"$UTIME".log
 		echo $PWD/$2 deleted at $UTIME | tee ~/.gc/log
+		;;
+
+	p)
+		case "$#" in
+			1) usage "No filename specified" ;;
+			2) ;;
+			*) usage "Too many arguments"
+		esac
+
+		xzcat ~/.gc/${2}.xz | less -S
 		;;
 
 	r)
