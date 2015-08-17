@@ -23,6 +23,10 @@ To delete a file
 
 gc d [file name]
 
+To view a deleted file
+
+gc p [Unix time stamp of deletion time (see the log)]
+
 To restore a file
 
 gc r [Unix time stamp of deletion time (see the log)]
@@ -38,4 +42,3 @@ gc empty
 TO DO
 
 -Dirrectory support
--User friendlyness

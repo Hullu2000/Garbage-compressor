@@ -32,6 +32,7 @@ usage () {
 	gc: $1
 	Usage:
 	    gc d FILENAME      Delete FILENAME
+	    gc p TIMESTAMP     View file deleted at time TIMESTAMP
 	    gc r TIMESTAMP     Recover file deleted at time TIMESTAMP
 	    gc l               View deletion log and timestamps
 	    gc empty           Empty the log and remove all deleted files
