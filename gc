@@ -21,26 +21,76 @@
 #TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 #SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+set -e
+
 UTIME=$(date +%s%3N)
 mkdir -p ~/.gc
 touch ~/.gc/log
 
-if [ $1 = "d" ]; then
-	mv $2 ~/.gc/$UTIME
-	xz ~/.gc/$UTIME
-	echo $PWD/$2 > ~/.gc/${UTIME}.log
-	echo $PWD/$2 deleted at $UTIME >> ~/.gc/log
-fi
+usage () {
+	cat <<-EOF >&2
+	gc: $1
+	Usage:
+	    gc d FILENAME      Delete FILENAME
+	    gc r TIMESTAMP     Recover file deleted at time TIMESTAMP
+	    gc l               View deletion log and timestamps
+	    gc empty           Empty the log and remove all deleted files
+	EOF
+	exit 1
+}
 
-if [ $1 = "r" ]; then
-	xz -d ~/.gc/${2}.xz
-	mv ~/.gc/$2 $(cat ~/.gc/${2}.log)
-	rm ~/.gc/${2}.log
-fi
+[ "$#" -gt 0 ] || usage "No command specified"
 
-if [ $1 = "l" ]; then
-	cat ~/.gc/log
-fi
-if [ $1 = "empty" ]; then
-	rm  ~/.gc/*
-fi
+case "$1" in
+	d)
+		case "$#" in
+			1) usage "No filename specified" ;;
+			2) ;;
+			*) usage "Too many arguments"
+		esac
+		[ -f "$2" ] || usage "File not found"
+
+		mv "$2" ~/.gc/"$UTIME"
+		xz ~/.gc/"$UTIME"
+		echo "$PWD/$2" > ~/.gc/"$UTIME".log
+		echo $PWD/$2 deleted at $UTIME | tee ~/.gc/log
+		;;
+
+	r)
+		case "$#" in
+			1) usage "No timestamp specified" ;;
+			2) ;;
+			*) usage "Too many arguments"
+		esac
+		[ -f ~/.gc/"$2".xz ] || usage "Timestamp not found"
+
+		xz -d ~/.gc/"$2".xz
+		mv ~/.gc/"$2" "$(cat ~/.gc/${2}.log)"
+		rm ~/.gc/"$2".log
+		# POSIX sed doesn't seem to have the -i option :(
+		cp ~/.gc/log ~/.gc/log.bak
+		sed "/$2/d" ~/.gc/log.bak > ~/.gc/log
+		rm ~/.gc/log.bak
+		;;
+
+	l)
+		case "$#" in
+			1) ;;
+			*) usage "Too many arguments"
+		esac
+
+		cat ~/.gc/log
+		;;
+
+	empty)
+		case "$#" in
+			1) ;;
+			*) usage "Too many arguments"
+		esac
+
+		rm  ~/.gc/*
+		;;
+
+	*)
+		usage "Command \`$1' unrecognised"
+esac
